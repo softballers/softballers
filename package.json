@@ -1,0 +1,23 @@
+{
+  "name": "softballers",
+  "version": "1.0.0",
+  "description": "Rec League Softball Association",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ssitu001/softballers.git"
+  },
+  "author": "Simon Shawn",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ssitu001/softballers/issues"
+  },
+  "homepage": "https://github.com/ssitu001/softballers#readme"
+}
