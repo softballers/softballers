@@ -22,7 +22,8 @@
   "homepage": "https://github.com/ssitu001/softballers#readme",
   "dependencies": {
     "react": "^15.4.2",
-    "react-dom": "^15.4.2"
+    "react-dom": "^15.4.2",
+    "sequelize": "^3.29.0"
   },
   "devDependencies": {
     "babel": "^6.5.2",
