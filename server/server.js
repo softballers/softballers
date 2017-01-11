@@ -11,6 +11,6 @@ const dbController = require('../database/controllers/dbController.js');
 app.use(bodyparser.json());
 app.use(express.static(path.join(__dirname, '../client', 'dist' ))).listen(PORT, () => {console.log(`listening on ${PORT}, homie`)});
 app.use('/admin', adminRouter);
-app.use('/league', leagueRouter);
+//app.use('/league', leagueRouter);
 //console.log("GETTING CALLED", Leagues)
 
