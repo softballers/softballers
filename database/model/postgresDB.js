@@ -16,6 +16,19 @@ sequelize
     console.log('Unable to connect::::', err)
   });
 
+//Model for Admin
+const Admin = sequelize.define('admins', {
+  username: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: { notEmpty: true },
+  }, 
+  password: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: { notEmpty: true },
+  }
+})
 //Model for leagues
 const Leagues = sequelize.define('leagues', {
   name: {
@@ -29,7 +42,7 @@ const Leagues = sequelize.define('leagues', {
 })
 
 //Model for teams
-const Teams = {
+const Teams = sequelize.define('teams', {
   teamname: {
     type: Sequelize.STRING
   },
@@ -42,10 +55,10 @@ const Teams = {
   league: {
     type: Sequelize.STRING
   }
-};
+});
 
 //Model for players
-const Players = {
+const Players = sequelize.define('players', {
   firstname: {
     type: Sequelize.STRING,
   },
@@ -68,32 +81,32 @@ const Players = {
     type: Sequelize.INTEGER,
   }
 
-};
+});
 
 //Model for schedule
-const Schedule = {
+const Schedule = sequelize.define('schedule', {
   hometeam: {
-
+    type: Sequelize.STRING,
   },
   awayteam: {
-
+    type: Sequelize.STRING,
   },
   week: {
-
+    type: Sequelize.INTEGER,
   },
   location: {
-
+    type: Sequelize.STRING,
   },
   date: {
-
+    type: Sequelize.DATE,
   },
   time: {
-
+    type: Sequelize.STRING,
   },
   league: {
-    
+    type: Sequelize.STRING,
   }
-};
+});
 
 //Model for stats
 
@@ -105,4 +118,4 @@ sequelize.sync({force: true})
   })
 
 
-module.exports = {sequelize, Leagues, Teams, Players, Schedule};
+module.exports = {sequelize, Admin, Leagues, Teams, Players, Schedule};
