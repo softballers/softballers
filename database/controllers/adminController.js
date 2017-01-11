@@ -23,5 +23,20 @@ adminController.findAdmin = (req, res) => {
         .catch(() => res.end(404));
 }
 
+adminController.removeAdmin = (req, res) => {
+ const { username, password } = req.body;
+ Admin.destroy( where: { username, password })
+			.then(() => res.send(201))
+			.catch(() => res.send(404));
+}
+
+adminController.changePassword = (req, res) => {
+	const { username, password, newpassword } = req.body;
+	Admin.update({ password: newpassword },
+				where : { username, password })
+			 .then(() => res.send(200))
+			 .catch(() => res.send(404));
+}
+
 
 module.exports = adminController;
