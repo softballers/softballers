@@ -1,0 +1,4 @@
+!#/usr/bin/env node
+
+const app = require('../server/server');
+app.listen(() => console.log('listening on port 3k');
