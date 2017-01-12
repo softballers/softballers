@@ -25,7 +25,7 @@ adminController.findAdmin = (req, res) => {
 
 adminController.removeAdmin = (req, res) => {
  const { username, password } = req.body;
- Admin.destroy( where: { username, password })
+ Admin.destroy({ username, password })
 			.then(() => res.send(201))
 			.catch(() => res.send(404));
 }
@@ -33,7 +33,7 @@ adminController.removeAdmin = (req, res) => {
 adminController.changePassword = (req, res) => {
 	const { username, password, newpassword } = req.body;
 	Admin.update({ password: newpassword },
-				where : { username, password })
+				{ username, password })
 			 .then(() => res.send(200))
 			 .catch(() => res.send(404));
 }
