@@ -27,14 +27,8 @@ adminController.findAdmin = (req, res) => {
     console.log("username:", username, "password:", password);
     return res.status(400).end();
   } 
-  Admin.findOne({where: { username, password }})
-        .then((blah) => {
-          if(blah) {
-            // console.log("blah", blah);
-            return res.end();
-          }
-          return res.status(400).end();
-        })
+  Admin.findOne({where: {username, password }})
+        .then(userExists => userExists ? res.end() : res.sendStatus(400).end()) 
         .catch(() => {
           console.log("CATCHNINGNGNG")
           res.sendStatus(400)
