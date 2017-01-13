@@ -112,7 +112,7 @@ const Schedule = sequelize.define('schedule', {
 
 
 
-sequelize.sync({force: true})
+sequelize.sync()
   .catch( (error) => {
     console.log(error)
   })
