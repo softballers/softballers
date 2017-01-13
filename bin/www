@@ -1,4 +1,4 @@
 #!/usr/bin/env node
 
 const app = require('../server/server');
-app.listen(3000, () => console.log('listening on port 3k'));
+app.listen(8080, () => console.log('listening on port 8080'));

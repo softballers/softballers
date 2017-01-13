@@ -4,8 +4,11 @@ const adminController = {};
 
 adminController.addAdmin = (req, res) => {
   const { username, password } = req.body;
-	if (!username || !password) return res.end(400);
-  console.log(username, password)
+  if (!username || !password) {
+    console.log("username:", username, "password:", password);
+    return res.status(400).end();
+  } 
+  console.log("root", username, password)
   Admin.create({ username, password })
        .then(() => { 
          console.log('ADMIN ADDED UP IN THAT DB DOE'); 
@@ -13,15 +16,29 @@ adminController.addAdmin = (req, res) => {
         })
        .catch(err => {
          console.error(err)
-         res.end(500);
+         res.status(500).end();
        });
 };
 
 adminController.findAdmin = (req, res) => {
   const { username, password } = req.body;
-  Admin.findOne({ username, password })
-        .then(() => res.send('FOUND ADMIN'))
-        .catch(() => res.end(404));
+  console.log("findAdmin", username, password)
+  if (!username || !password) {
+    console.log("username:", username, "password:", password);
+    return res.status(400).end();
+  } 
+  Admin.findOne({where: { username, password }})
+        .then((blah) => {
+          if(blah) {
+            // console.log("blah", blah);
+            return res.end();
+          }
+          return res.status(400).end();
+        })
+        .catch(() => {
+          console.log("CATCHNINGNGNG")
+          res.sendStatus(400)
+        });
 }
 
 adminController.removeAdmin = (req, res) => {
