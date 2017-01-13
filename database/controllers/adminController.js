@@ -4,6 +4,7 @@ const adminController = {};
 
 adminController.addAdmin = (req, res) => {
   const { username, password } = req.body;
+	if (!username || !password) return res.end(400);
   console.log(username, password)
   Admin.create({ username, password })
        .then(() => { 
