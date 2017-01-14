@@ -5,10 +5,8 @@ const adminController = {};
 adminController.addAdmin = (req, res) => {
   const { username, password } = req.body;
   if (!username || !password) {
-    console.log("username:", username, "password:", password);
     return res.status(400).end();
   } 
-  console.log("root", username, password)
   Admin.create({ username, password })
        .then(() => { 
          console.log('ADMIN ADDED UP IN THAT DB DOE'); 
@@ -22,11 +20,11 @@ adminController.addAdmin = (req, res) => {
 
 adminController.findAdmin = (req, res) => {
   const { username, password } = req.body;
-  console.log("findAdmin", username, password)
   if (!username || !password) {
     console.log("username:", username, "password:", password);
     return res.status(400).end();
   } 
+
   Admin.findOne({where: {username, password }})
         .then(userExists => userExists ? res.end() : res.sendStatus(400).end()) 
         .catch(() => {
@@ -37,7 +35,7 @@ adminController.findAdmin = (req, res) => {
 
 adminController.removeAdmin = (req, res) => {
  const { username, password } = req.body;
- Admin.destroy({ username, password })
+ Admin.destroy({ where : { username, password }})
 			.then(() => res.send(201))
 			.catch(() => res.send(404));
 }

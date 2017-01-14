@@ -23,7 +23,8 @@ describe('root route', () => {
 describe("admin route", function(){
 	const username = 'root';
 	const password = 'toor';
-	before( function() {
+
+	before( () =>  {
 		Admin.create({ username, password })
 			.then(() => { 
 				console.log('ADMIN ADDED UP IN THAT TEST DOE'); 
@@ -34,10 +35,9 @@ describe("admin route", function(){
 	});
 
 	after( function() {
-		console.log("AFTERRRRRRRR")
-		Admin.destroy({ username, password })
-			.then(() => console.log("deleted"))
-			.catch(() => console.log("errrrrror"));
+		Admin.destroy({ where: { username, password } })
+			.then(() => console.log("deleted admin"))
+			.catch((err) => console.log("error deleting admin", err));
 	});
 
 	it("returns a 200 status code", function(done){
@@ -70,6 +70,13 @@ describe("admin route", function(){
 			.send({ 'username': 'rooty', 'password': 'ytoor' })
 			.expect(400, done);
 	});
+	
+	it("deletes an admin", function(done){
+		request(app)
+			.post('/admin/delete')
+			.send({ 'username':'root', 'password': 'toor' })
+			.expect(201, done);
+	});
 });
 
 describe("leagues route", function(){
@@ -93,6 +100,7 @@ describe("league DB logic", function(){
 			.send({ 'name': 'TESTLEAGUE' })
 			.expect(200, done);
 	});
+
 	it("should retrieve newly added league", function(done){
 		request(app)
 			.get('/leagues/TESTLEAGUE')
