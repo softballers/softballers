@@ -4,7 +4,7 @@ const Sequelize = require('sequelize');
 //const REMOTE_URL = require('../database.js');
 const LOCAL_URL = 'postgres://localhost:5432/softballers';
 
-const sequelize = new Sequelize(LOCAL_URL);
+const sequelize = new Sequelize(LOCAL_URL, { logging: false });
 
 //check connection
 sequelize
