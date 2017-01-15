@@ -36,16 +36,16 @@ adminController.findAdmin = (req, res) => {
 adminController.removeAdmin = (req, res) => {
  const { username, password } = req.body;
  Admin.destroy({ where : { username, password }})
-			.then(() => res.send(201))
-			.catch(() => res.send(404));
+			.then(() => res.sendStatus(201))
+			.catch(() => res.sendStatus(404));
 }
 
 adminController.changePassword = (req, res) => {
 	const { username, password, newpassword } = req.body;
 	Admin.update({ password: newpassword },
 				{ username, password })
-			 .then(() => res.send(200))
-			 .catch(() => res.send(404));
+			 .then(() => res.sendStatus(200))
+			 .catch(() => res.sendStatus(404));
 }
 
 
