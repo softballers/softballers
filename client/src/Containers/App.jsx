@@ -6,8 +6,7 @@ class App extends Component {
   }
 
   render() {
-    return (
-      
+    return (      
       <h1>Softballers</h1>
     )
   }
