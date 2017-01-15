@@ -1,11 +1,16 @@
 const { League } = require('../model/postgresDB');
 
 const leagueController = {};
+leagueController.allLeagues = (req, res) = {
+	League.findAll({})
+				.then(data => res.end(data))
+				.catch(err => res.statusCode(404).end());
+}
 
 leagueController.addLeague = (req, res) => {
   const { name } = req.body;
   League.create({ name })
-       .then(() => { console.log('LEAGUE ADDED UP IN THAT DB DOE'); })
+       .then(() =>  res.end())
        .catch( err => console.error(err));
 };
 

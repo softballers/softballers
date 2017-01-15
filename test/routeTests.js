@@ -24,7 +24,7 @@ describe("admin route", function(){
 	const username = 'root';
 	const password = 'toor';
 
-	before( () =>  {
+	before( function() {
 		Admin.create({ username, password })
 			.then(() => { 
 				console.log('ADMIN ADDED UP IN THAT TEST DOE'); 
@@ -43,11 +43,7 @@ describe("admin route", function(){
 	it("returns a 200 status code", function(done){
 		request(app)
 			.get('/admin')
-			.expect(200)
-			.end(function(err){
-				if (err) console.error(err);
-				done();
-			});	
+			.expect(200,done);
 	});
 
 	it("validates admin login", function(done){
@@ -79,18 +75,26 @@ describe("admin route", function(){
 	});
 });
 
-describe("leagues route", function(){
+describe("league route", function(){
+
 	it("returns a 200 status code", function(done){
 		request(app)
-			.get("/leagues")
+			.get("/league")
 			.expect(200, done)
 	});
 
 	it('returns json', (done) => {
 		request(app)
-			.get('/leagues')
+			.get('/league')
 			.expect('Content-Type', /json/, done);
 	});
+	
+	it('can return just one league', (done => {
+		request(app)
+			.get('/league/01/')
+			.expect(200, done);
+	}));
+
 });
 
 describe("league DB logic", function(){
@@ -105,6 +109,6 @@ describe("league DB logic", function(){
 		request(app)
 			.get('/leagues/TESTLEAGUE')
 			.expect('Content-Type', /json/, done);	
-	});
+	});	
 });
 
