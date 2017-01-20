@@ -48,21 +48,21 @@ describe("admin route", function(){
 
 	it("validates admin login", function(done){
 		request(app)
-			.get('/admin/login')
+			.post('/admin/login')
 			.send({ 'username': '', 'password': '' })
 			.expect(400, done);
 	});
 
 	it("logs in valid user", function(done){
 		request(app)
-			.get('/admin/login')
+			.post('/admin/login')
 			.send({ 'username': 'root', 'password': 'toor' })
 			.expect(200, done);
 	});
 
 	it("should not log in invalid user", function(done){
 		request(app)
-			.get('/admin/login')
+			.post('/admin/login')
 			.send({ 'username': 'rooty', 'password': 'ytoor' })
 			.expect(400, done);
 	});
