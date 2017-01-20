@@ -98,7 +98,7 @@ describe("league route", function(){
 	it('can return just one league', (done => {
 		request(app)
 			.get('/league/1/')
-			.expect(200, done);
+			.expect('Content-Length', /112/,  done);
 	}));
 
 });
@@ -113,7 +113,7 @@ describe("league DB logic", function(){
 
 	it("should retrieve newly added league", function(done){
 		request(app)
-			.get('/league/')
+			.get('/league/1/')
 			.expect('Content-Type', /json/, done);	
 	});	
 });
