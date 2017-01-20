@@ -13,9 +13,12 @@ leagueController.findAll = (req, res) => {
 }
 
 leagueController.findOne = (req, res) => {
-  const { name } = req.body;
-  League.findOne({ name })
-        .then(() => res.send('FOUND LEAGUE'))
+  const { id } = req.params;
+	console.log('id',id);
+  League.findOne({ where : { leagueid: +id }})
+        .then((data) => {
+					console.log(data);	
+					res.json(data)})
         .catch(() => res.end(404));
 }
 
@@ -27,8 +30,8 @@ leagueController.addLeague = (req, res) => {
 };
 
 leagueController.removeLeague = (req,res) => {
-	const { id } = req.body;
-	League.destroy({ where: { id }})
+	const { id } = req.params;
+	League.destroy({ where: { leagueid: id }})
 				.then(() => res.status(200).end())
 				.catch((err) => {
 				  console.log(err);	
