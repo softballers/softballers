@@ -89,9 +89,15 @@ describe("league route", function(){
 			.expect('Content-Type', /json/, done);
 	});
 	
+	it('can return all leauges', (done => {
+		request(app)
+			.get('/league')
+			.expect(200,done);
+	}));
+
 	it('can return just one league', (done => {
 		request(app)
-			.get('/league/01/')
+			.get('/league/1/')
 			.expect(200, done);
 	}));
 
@@ -100,14 +106,14 @@ describe("league route", function(){
 describe("league DB logic", function(){
 	it("should add new league", function(done){
 		request(app)
-			.post('/leagues')
+			.post('/league')
 			.send({ 'name': 'TESTLEAGUE' })
 			.expect(200, done);
 	});
 
 	it("should retrieve newly added league", function(done){
 		request(app)
-			.get('/leagues/TESTLEAGUE')
+			.get('/league/')
 			.expect('Content-Type', /json/, done);	
 	});	
 });
