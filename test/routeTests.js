@@ -48,21 +48,21 @@ describe("admin route", function(){
 
 	it("validates admin login", function(done){
 		request(app)
-			.get('/admin/login')
+			.post('/admin/login')
 			.send({ 'username': '', 'password': '' })
 			.expect(400, done);
 	});
 
 	it("logs in valid user", function(done){
 		request(app)
-			.get('/admin/login')
+			.post('/admin/login')
 			.send({ 'username': 'root', 'password': 'toor' })
 			.expect(200, done);
 	});
 
 	it("should not log in invalid user", function(done){
 		request(app)
-			.get('/admin/login')
+			.post('/admin/login')
 			.send({ 'username': 'rooty', 'password': 'ytoor' })
 			.expect(400, done);
 	});
@@ -89,10 +89,16 @@ describe("league route", function(){
 			.expect('Content-Type', /json/, done);
 	});
 	
+	it('can return all leauges', (done => {
+		request(app)
+			.get('/league')
+			.expect(200,done);
+	}));
+
 	it('can return just one league', (done => {
 		request(app)
-			.get('/league/01/')
-			.expect(200, done);
+			.get('/league/1/')
+			.expect('Content-Length', /112/,  done);
 	}));
 
 });
@@ -100,14 +106,14 @@ describe("league route", function(){
 describe("league DB logic", function(){
 	it("should add new league", function(done){
 		request(app)
-			.post('/leagues')
+			.post('/league')
 			.send({ 'name': 'TESTLEAGUE' })
 			.expect(200, done);
 	});
 
 	it("should retrieve newly added league", function(done){
 		request(app)
-			.get('/leagues/TESTLEAGUE')
+			.get('/league/1/')
 			.expect('Content-Type', /json/, done);	
 	});	
 });

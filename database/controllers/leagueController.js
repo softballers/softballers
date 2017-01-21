@@ -1,10 +1,25 @@
 const { League } = require('../model/postgresDB');
 
 const leagueController = {};
-leagueController.allLeagues = (req, res) = {
+
+leagueController.findAll = (req, res) => {
 	League.findAll({})
-				.then(data => res.end(data))
-				.catch(err => res.statusCode(404).end());
+				.then(data => {
+					res.json(data)
+				})
+				.catch((err) =>{
+					console.log('findAll controller method is sad and having issues.  please fix it.',err);		
+					res.status(404).end()});
+}
+
+leagueController.findOne = (req, res) => {
+  const { id } = req.params;
+	console.log('id',id);
+  League.findOne({ where : { leagueid: +id }})
+        .then((data) => {
+					console.log(data);	
+					res.json(data)})
+        .catch(() => res.end(404));
 }
 
 leagueController.addLeague = (req, res) => {
@@ -14,12 +29,16 @@ leagueController.addLeague = (req, res) => {
        .catch( err => console.error(err));
 };
 
-leagueController.findLeague = (req, res) => {
-  const { name } = req.body;
-  League.findOne({ name })
-        .then(() => res.send('FOUND LEAGUE'))
-        .catch(() => res.end(404));
+leagueController.removeLeague = (req,res) => {
+	const { id } = req.params;
+	League.destroy({ where: { leagueid: id }})
+				.then(() => res.status(200).end())
+				.catch((err) => {
+				  console.log(err);	
+					res.status(404).end()
+				});
 }
+
 
 
 module.exports = leagueController;
