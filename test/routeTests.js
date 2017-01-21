@@ -103,7 +103,7 @@ describe("league route", function(){
 
 });
 
-describe("league DB logic", function(){
+describe("league adding and removing", function(){
 	it("should add new league", function(done){
 		request(app)
 			.post('/league')
@@ -115,6 +115,45 @@ describe("league DB logic", function(){
 		request(app)
 			.get('/league/1/')
 			.expect('Content-Type', /json/, done);	
-	});	
+	});
 });
 
+describe('schedule behavior', function(){
+	const data = { 'data': 'test data goes here' };
+	
+	it('should return all schedules', function(done){
+		request(app)
+			.get('/schedule')
+			.expect(200,done);
+	})
+
+	it('should return json', function(done){
+		request(app)
+			.get('/schedule')
+			.expect('Content-Type', /json/, done);
+	})
+
+	it('should return on schedule', function(done){
+		request(app)
+			.get('/schedule/1')
+			.expect(200,done);
+	})
+
+	it('should add a schedule', function(done){
+		request(app)
+			.post('/schedule')
+			.send(data)
+			.expect(200,done);
+	});
+
+	it('should delete a schedule', function(done){
+		request(app)
+			.post('/schedule/1')
+			.expect(200,done);
+		
+		request(app)
+			.get('/schedule/1')
+			.expect(404,done);
+
+	});	
+});
