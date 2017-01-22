@@ -56,7 +56,7 @@ describe("admin route", function(){
 	it("logs in valid user", function(done){
 		request(app)
 			.post('/admin/login')
-			.send({ 'username': 'root', 'password': 'toor' })
+			.send({ 'username': 'ROOT', 'password': 'TOOR' })
 			.expect(200, done);
 	});
 
@@ -115,6 +115,24 @@ describe("league adding and removing", function(){
 		request(app)
 			.get('/league/1/')
 			.expect('Content-Type', /json/, done);	
+	});
+});
+describe("player behavior", function(){
+	const data = {
+				'firstname': 'testPlayerFirstName',
+				'lastname': 'testPlayerLastName',
+				'teamname': 'testPlayerTeamName',
+				'battingavg': 0,
+				'hits': 100,
+				'atbats': 100,
+				'homeruns': 100
+		}
+
+	it("should add a new player", function(done){
+		request(app)
+			.post('/admin/player/addPlayer')
+			.send(data)	
+			.expect(200,done);	
 	});
 });
 
