@@ -134,6 +134,13 @@ describe("player behavior", function(){
 			.send(data)	
 			.expect(200,done);	
 	});
+
+	it("should remove a new player", function(done){
+		request(app)
+			.post('/admin/player/removePlayer/1')
+			.expect(200,done);
+	});
+	
 });
 
 describe('schedule behavior', function(){

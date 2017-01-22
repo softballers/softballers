@@ -18,6 +18,12 @@ playerController.addPlayer = (req,res) => {
 playerController.removePlayer = (req,res) => {
 	const { id } = req.params;
 	
-	Player.destroy({ where: 
+	Player.destroy({ where: { id: +id } })
+				.then(() => res.end())
+				.catch(err => {
+					console.log(`error removing player ${err}`);
+					res.sendStatus(400).end()
+				});
+}
 
 module.exports = playerController;
