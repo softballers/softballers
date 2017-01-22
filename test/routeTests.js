@@ -117,16 +117,23 @@ describe("league adding and removing", function(){
 			.expect('Content-Type', /json/, done);	
 	});
 });
+
 describe("player behavior", function(){
+
 	const data = {
-				'firstname': 'testPlayerFirstName',
-				'lastname': 'testPlayerLastName',
-				'teamname': 'testPlayerTeamName',
-				'battingavg': 0,
-				'hits': 100,
-				'atbats': 100,
-				'homeruns': 100
+		'firstname': 'testPlayerFirstName',
+		'lastname': 'testPlayerLastName',
+		'teamname': 'testPlayerTeamName',
+		'battingavg': 0,
+		'hits': 100,
+		'atbats': 100,
+		'homeruns': 100
 		}
+	
+	const updatedData = {
+		'firstname': 'shawn'
+		}
+
 
 	it("should add a new player", function(done){
 		request(app)
@@ -135,13 +142,32 @@ describe("player behavior", function(){
 			.expect(200,done);	
 	});
 
+	it("should find an existing player", function(done){
+		request(app)
+			.get('/admin/player/2')
+			.expect(200,done);
+	});
+	
+	it("should return JSON", function(done){
+		request(app)
+			.get('/admin/player/2')
+			.expect('Content-Type', /json/, done);
+	});
+	
+	it("should update an existing player", function(done){
+		request(app)
+			.put('/admin/player/updatePlayer/2')
+			.send(updatedData)
+			.expect(200,done);
+	});
+
 	it("should remove a new player", function(done){
 		request(app)
 			.post('/admin/player/removePlayer/1')
 			.expect(200,done);
 	});
 	
-});
+});	
 
 describe('schedule behavior', function(){
 	const data = { 'data': 'test data goes here' };

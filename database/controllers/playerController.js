@@ -15,6 +15,13 @@ playerController.addPlayer = (req,res) => {
 				});
 }
 
+playerController.findPlayer = (req,res) => {
+	const { id } = req.params;
+	Player.find({ where: { id }})
+				.then((playerData) => res.json(playerData))
+				.catch(err => res.sendStatus(404).end());
+}
+
 playerController.removePlayer = (req,res) => {
 	const { id } = req.params;
 	
@@ -24,6 +31,14 @@ playerController.removePlayer = (req,res) => {
 					console.log(`error removing player ${err}`);
 					res.sendStatus(400).end()
 				});
+}
+
+playerController.updatePlayer = (req,res) => {
+	const data = req.body;
+	const { id } = req.params;
+	Player.update(data, { where: { id }})
+				.then(() => res.end())
+				.catch(err => res.sendStatus(400).end());
 }
 
 module.exports = playerController;
