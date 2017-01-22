@@ -7,6 +7,7 @@ const bodyparser = require('body-parser');
 const adminRouter = require('./adminRouter');
 const leagueRouter = require('./leagueRouter');
 const playerRouter = require('./playerRouter');
+const teamRouter = require('./teamRouter');
 const dbController = require('../database/controllers/dbController.js');
 
 app.use(bodyparser.json());
@@ -14,7 +15,9 @@ app.use(express.static(path.join(__dirname, '../client', 'dist' )));
 
 app.use('/admin', adminRouter);
 app.use('/admin/player', playerRouter);
+app.use('/admin/team', teamRouter);
 app.use('/league', leagueRouter);
+
 
 module.exports = app;
 

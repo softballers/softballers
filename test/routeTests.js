@@ -168,7 +168,40 @@ describe("player behavior", function(){
 	});
 	
 });	
+describe("team behavior", function(){
+const teamData = {
+	'teamname': 'test',
+	'wins': 0,
+	'losses': 1,
+	'leagueid': 3
+}
 
+	it("should return JSON", function(done){
+		request(app)
+			.get('/admin/team/')
+			.expect('Content-Type', /json/, done);
+	});
+
+	it("should send 200 status code", function(done){
+		request(app)
+			.get('/admin/team/')
+			.expect(200,done)
+	});
+
+	it("should send all teams", function(done){
+			request(app)
+			.get('/admin/team/')
+			.expect(200,done)
+	})
+
+	it("should add a new time", function(done){
+		request(app)
+			.post('/admin/team/')
+			.send(teamData)
+			.expect(200,done);
+	})
+
+});
 describe('schedule behavior', function(){
 	const data = { 'data': 'test data goes here' };
 	
