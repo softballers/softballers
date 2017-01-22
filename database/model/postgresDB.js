@@ -42,7 +42,7 @@ const League = sequelize.define('leagues', {
 })
 
 //Model for teams
-const Teams = sequelize.define('teams', {
+const Team  = sequelize.define('teams', {
   teamname: {
     type: Sequelize.STRING
   },
@@ -118,4 +118,4 @@ sequelize.sync()
   })
 
 
-module.exports = {sequelize, Admin, League, Teams, Player, Schedule};
+module.exports = {sequelize, Admin, League, Team , Player, Schedule};
