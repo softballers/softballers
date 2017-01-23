@@ -1,7 +1,8 @@
 const request = require('supertest');
 const chai = require('chai');
+const should = require('should');
 const app = require('../server/server.js');
-const { Leagues, Admin, Teams, Player, Schedule } = require('../database/model/postgresDB');
+const { League, Admin, Teams, Player, Schedule } = require('../database/model/postgresDB');
 
 describe('root route', () => {
 	it('returns a 200 status code', (done) => {
@@ -175,8 +176,21 @@ describe("client facing player behavior", function(){
 		request(app)
 			.get('/player/3')
 			.expect(200,done);
-
 	});
+
+	it('should return all players from one team', function(done){
+		request(app)
+			.get('/player/byteam/:teamname')
+			.expect(200,done);
+	})
+
+	it('should return all players from one league', function(done){
+		//player table should probably have a leagueid key
+		request(app)
+			.get('/player/byleague/:leagueid')
+			.expect(200,done);
+	});
+
 });	
 
 describe('admin facing team behavior', function(){
@@ -242,13 +256,21 @@ describe('client facing league  behavior', function(){
 			.expect(200,done);
 	});
 
+	it('should return JSON content type', function(done){
+		request(app)
+			.get('/league/1')
+			.expect('Content-Type', /json/, done);
+	});
+		
 	it('should return all teams belonging to one league', function(done){
+		//should test response body length somehow
+		let data;
 		request(app)
 			.get('/league/1')
 			.expect(function(res){
-				console.log(res.body);
+				data = res.body.length;
 			})
-			.expect(200,done);
+			.expect(200, done);	
 	})
 
 })
