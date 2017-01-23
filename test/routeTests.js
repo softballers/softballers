@@ -1,7 +1,7 @@
 const request = require('supertest');
 const chai = require('chai');
 const app = require('../server/server.js');
-const { Leagues, Admin, Teams, Players, Schedule } = require('../database/model/postgresDB');
+const { Leagues, Admin, Teams, Player, Schedule } = require('../database/model/postgresDB');
 
 describe('root route', () => {
 	it('returns a 200 status code', (done) => {
@@ -118,7 +118,7 @@ describe('league adding and removing', function(){
 	});
 });
 
-describe('player behavior', function(){
+describe('admin facing player behavior', function(){
 
 	const data = {
 		'firstname': 'testPlayerFirstName',
@@ -167,6 +167,16 @@ describe('player behavior', function(){
 			.expect(200,done);
 	});
 	
+});	
+
+describe("client facing player behavior", function(){
+
+	it("should return one Player", function(done){
+		request(app)
+			.get('/player/:id')
+			.expect(200,done);
+
+	});
 });	
 
 describe('admin facing team behavior', function(){
@@ -239,9 +249,10 @@ describe('client facing league  behavior', function(){
 				console.log(res.body);
 			})
 			.expect(200,done);
-})
+	})
 
 })
+
 
 xdescribe('schedule behavior', function(){
 	const data = { 'data': 'test data goes here' };
