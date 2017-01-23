@@ -12,7 +12,7 @@ teamController.findAll = (req,res) => {
 
 teamController.addOne = (req,res) => {
 	const data = req.body;
-	if (!data.leaguename || !data.teamname) return res.sendStatus(400).end();
+	if (!data.league || !data.teamname) return res.sendStatus(400).end();
 
 	Team.create(data)
 		.then(() => res.end())
@@ -20,5 +20,16 @@ teamController.addOne = (req,res) => {
 			console.log(`error creating a new team ${err}`);
 		})
 }
+
+teamController.removeOne = (req,res) => {
+	const { id } = req.params;
+
+	Team.destroy({ where: { id }})
+		.then(() => res.end())
+		.catch(err => {
+			console.log(`error while trying to remove team ${err}`);
+		})
+
+};	
 
 module.exports = teamController;
