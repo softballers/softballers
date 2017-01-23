@@ -14,7 +14,6 @@ leagueController.findAll = (req, res) => {
 
 leagueController.findOne = (req, res) => {
   const { id } = req.params;
-	console.log('id',id);
   League.findOne({ where : { leagueid: +id }})
         .then((leagueData) => {
 					const leagueName = leagueData.name;

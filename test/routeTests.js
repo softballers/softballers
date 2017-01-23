@@ -173,7 +173,7 @@ describe("client facing player behavior", function(){
 
 	it("should return one Player", function(done){
 		request(app)
-			.get('/player/:id')
+			.get('/player/3')
 			.expect(200,done);
 
 	});

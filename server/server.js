@@ -4,6 +4,7 @@ const path = require('path');
 const PORT = process.ENV || 8080;
 const bodyparser = require('body-parser');
 // const db = require('../database/model/postgresDB.js');
+// routers //
 const adminRouter = require('./adminRouter');
 const leagueRouter = require('./leagueRouter');
 const adminPlayerRouter = require('./adminPlayerRouter');
