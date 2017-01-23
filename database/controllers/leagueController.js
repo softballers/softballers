@@ -1,5 +1,6 @@
-const { League, Team } = require('../model/postgresDB');
+const { League, Team, Schedule } = require('../model/postgresDB');
 const teamController = require('./teamController');
+const scheduleController = require('./scheduleController');
 const leagueController = {};
 
 leagueController.findAll = (req, res) => {
@@ -14,9 +15,19 @@ leagueController.findAll = (req, res) => {
 
 leagueController.findOne = (req, res) => {
   const { id } = req.params;
+	const outputJSON = [];
   League.findOne({ where : { leagueid: +id }})
         .then((leagueData) => {
 					const leagueName = leagueData.name;
+					return leagueData; 
+				})
+        .catch(() =>{
+					console.log('error finding one league');	
+					res.end(404);
+				})
+				.then(leagueData  => {
+					const leagueName = leagueData.name;
+					console.log('testing', leagueName);
 					Team.findAll({ where: { league: leagueName }})
 						.then(teams => {
 							const outputJSON = [leagueData]; 
@@ -28,10 +39,6 @@ leagueController.findOne = (req, res) => {
 							res.status(400).end()
 						});
 				})
-        .catch(() =>{
-					console.log('error finding one league');	
-					res.end(404);
-				});
 };
 
 leagueController.addLeague = (req, res) => {

@@ -1,6 +1,7 @@
 const request = require('supertest');
 const chai = require('chai');
-const should = require('should');
+const should = chai.should();
+const expect = chai.expect;
 const app = require('../server/server.js');
 const { League, Admin, Teams, Player, Schedule } = require('../database/model/postgresDB');
 
@@ -96,10 +97,18 @@ describe('league route', function(){
 			.expect(200,done);
 	}));
 
-	xit('can return just one league', (done => {
+	it('can return just one league', (done => {
+		//this should also test content length
 		request(app)
 			.get('/league/1/')
-			.expect('Content-Length', /112/,  done);
+			.expect(200)
+			.end(function(err,res){
+				const leagues = res.body.filter(thing => {
+					return !Array.isArray(thing);
+				})
+				expect(leagues).to.not.equal(null);
+				done();
+			})
 	}));
 
 });
@@ -177,6 +186,12 @@ describe("client facing player behavior", function(){
 			.get('/player/3')
 			.expect(200,done);
 	});
+	
+	it('should return JSON', function(done){
+		request(app)
+			.get('/player/3')
+			.expect('Content-Type', /json/, done);
+	});
 
 	it('should return all players from one team', function(done){
 		request(app)
@@ -184,8 +199,8 @@ describe("client facing player behavior", function(){
 			.expect(200,done);
 	})
 
-	it('should return all players from one league', function(done){
-		//player table should probably have a leagueid key
+	xit('should return all players from one league', function(done){
+		//player table should probably have a leagueid key to make this behavior less insane
 		request(app)
 			.get('/player/byleague/:leagueid')
 			.expect(200,done);
@@ -248,7 +263,7 @@ describe('admin facing team behavior', function(){
 	
 });
 
-describe('client facing league  behavior', function(){
+describe('client facing league behavior', function(){
 
 	it('should return a 200 status for returning all teams belonging to one league', function(done){
 		request(app)
@@ -263,20 +278,20 @@ describe('client facing league  behavior', function(){
 	});
 		
 	it('should return all teams belonging to one league', function(done){
-		//should test response body length somehow
-		let data;
 		request(app)
 			.get('/league/1')
-			.expect(function(res){
-				data = res.body.length;
+			.expect(200)	
+			.end(function(err,res){
+				expect(res.body).to.not.have.length(1);
+				expect(res.body).to.not.equal(null);
+				done();
 			})
-			.expect(200, done);	
-	})
+	})	
 
 })
 
 
-xdescribe('schedule behavior', function(){
+describe('schedule behavior', function(){
 	const data = { 'data': 'test data goes here' };
 	
 	it('should return all schedules', function(done){
@@ -285,26 +300,26 @@ xdescribe('schedule behavior', function(){
 			.expect(200,done);
 	})
 
-	it('should return json', function(done){
+	xit('should return json', function(done){
 		request(app)
 			.get('/schedule')
 			.expect('Content-Type', /json/, done);
 	})
 
-	it('should return on schedule', function(done){
+	xit('should return on schedule', function(done){
 		request(app)
 			.get('/schedule/1')
 			.expect(200,done);
 	})
 
-	it('should add a schedule', function(done){
+	xit('should add a schedule', function(done){
 		request(app)
 			.post('/schedule')
 			.send(data)
 			.expect(200,done);
 	});
 
-	it('should delete a schedule', function(done){
+	xit('should delete a schedule', function(done){
 		request(app)
 			.post('/schedule/1')
 			.expect(200,done);

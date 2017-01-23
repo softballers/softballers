@@ -24,13 +24,17 @@ playerController.findPlayer = (req,res) => {
 
 playerController.findPlayersByTeam = (req,res) => {
 	const { teamname } = req.params;
-	console.log('find p by team test');
 	Player.findAll({ where: { teamname }})
 		.then(playerData => res.json(playerData))
 		.catch(err => {
 			console.log(`error in findPlayersByTeam method of playerController ${err}`);
 			res.status(404).end();
 		})
+}
+
+playerController.findPlayersByLeague = (req,res) => {
+	const { leagueid } = req.params;
+	//an id on the player model would make this really nice
 }
 
 
