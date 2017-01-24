@@ -1,50 +1,34 @@
 const { League, Team, Schedule } = require('../model/postgresDB');
-const teamController = require('./teamController');
-const scheduleController = require('./scheduleController');
 const leagueController = {};
 
 leagueController.findAll = (req, res) => {
 	League.findAll({})
-				.then(data => {
-					res.json(data)
-				})
-				.catch((err) =>{
-					console.log('findAll controller method is sad and having issues.  please fix it.',err);		
-					res.status(404).end()});
+		.then(data => {
+			res.json(data)
+		})
+		.catch((err) =>{
+			console.log('findAll controller method is sad and having issues.  please fix it.',err);		
+			res.status(404).end()});
 }
 
 leagueController.findOne = (req, res) => {
   const { id } = req.params;
-	const outputJSON = [];
   League.findOne({ where : { leagueid: +id }})
-        .then((leagueData) => {
-					return leagueData ? leagueData : ''; 
-				})
-        .catch(() =>{
-					console.log('error finding one league');	
-					res.end(404);
-				})
-				.then((leagueData) => {
-					console.log('findOne league controller', leagueData);
-					return leagueData;
-				})
-				.catch(() => res.status(400).end)
-				.then(leagueData  => {
-					if (!leagueData.name) return res.status(404).end();
-					const leagueName = leagueData.name;
-					Team.findAll({ where: { league: leagueName }})
-						.then(teams => {
-							const outputJSON = [{ leagueData: leagueData }]; 
-							const teamData = {};
-							teamData.teams = teams;
-							outputJSON.push(teamData);
-							console.log('leage controller, data before response', JSON.stringify(outputJSON));
-							res.json(outputJSON);
-						})
-						.catch(err => {
-							res.status(400).end()
-						});
-				})
+		.then((leagueData) => {	
+			if (!leagueData) return res.status(404).end();
+			Schedule.findAll({ where: { league: leagueData.name }})
+				.then(scheduleData => [{ leagueData }, { scheduleData }])
+				.catch(() => res.status(400).end())		
+			.then((leagueData) => {
+				Team.findAll({ where: { league: leagueData[0].leagueData.name }})
+					.then(teams => {
+						leagueData.push({ teams });
+						return res.json(leagueData);
+					})
+					.catch(err => res.status(400).end());
+			})
+		})
+		.catch(() => res.status(400).end)
 };
 
 leagueController.addLeague = (req, res) => {
@@ -57,11 +41,11 @@ leagueController.addLeague = (req, res) => {
 leagueController.removeLeague = (req,res) => {
 	const { id } = req.params;
 	League.destroy({ where: { leagueid: id }})
-				.then(() => res.status(200).end())
-				.catch((err) => {
-				  console.log(err);	
-					res.status(404).end()
-				});
+		.then(() => res.status(200).end())
+		.catch((err) => {
+			console.log(err);	
+			res.status(404).end()
+		});
 }
 
 leagueController.findAllTeams = (req,res) => {
