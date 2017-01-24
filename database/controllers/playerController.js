@@ -1,4 +1,4 @@
-const { Player } = require('../model/postgresDB.js');
+const { Player, Team } = require('../model/postgresDB.js');
 
 const playerController = {};
 
@@ -21,6 +21,22 @@ playerController.findPlayer = (req,res) => {
 				.then((playerData) => res.json(playerData))
 				.catch(err => res.sendStatus(404).end());
 }
+
+playerController.findPlayersByTeam = (req,res) => {
+	const { teamname } = req.params;
+	Player.findAll({ where: { teamname }})
+		.then(playerData => res.json(playerData))
+		.catch(err => {
+			console.log(`error in findPlayersByTeam method of playerController ${err}`);
+			res.status(404).end();
+		})
+}
+
+playerController.findPlayersByLeague = (req,res) => {
+	const { leagueid } = req.params;
+	//an id on the player model would make this really nice
+}
+
 
 playerController.removePlayer = (req,res) => {
 	const { id } = req.params;

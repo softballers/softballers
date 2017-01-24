@@ -1,7 +1,9 @@
 const request = require('supertest');
 const chai = require('chai');
+const should = chai.should();
+const expect = chai.expect;
 const app = require('../server/server.js');
-const { Leagues, Admin, Teams, Player, Schedule } = require('../database/model/postgresDB');
+const { League, Admin, Teams, Player, Schedule } = require('../database/model/postgresDB');
 
 describe('root route', () => {
 	it('returns a 200 status code', (done) => {
@@ -95,10 +97,18 @@ describe('league route', function(){
 			.expect(200,done);
 	}));
 
-	xit('can return just one league', (done => {
+	it('can return just one league', (done => {
+		//this should also test content length
 		request(app)
 			.get('/league/1/')
-			.expect('Content-Length', /112/,  done);
+			.expect(200)
+			.end(function(err,res){
+				const leagues = res.body.filter(thing => {
+					return !Array.isArray(thing);
+				})
+				expect(leagues).to.not.equal(null);
+				done();
+			})
 	}));
 
 });
@@ -175,8 +185,27 @@ describe("client facing player behavior", function(){
 		request(app)
 			.get('/player/3')
 			.expect(200,done);
-
 	});
+	
+	it('should return JSON', function(done){
+		request(app)
+			.get('/player/3')
+			.expect('Content-Type', /json/, done);
+	});
+
+	it('should return all players from one team', function(done){
+		request(app)
+			.get('/player/byteam/:teamname')
+			.expect(200,done);
+	})
+
+	xit('should return all players from one league', function(done){
+		//player table should probably have a leagueid key to make this behavior less insane
+		request(app)
+			.get('/player/byleague/:leagueid')
+			.expect(200,done);
+	});
+
 });	
 
 describe('admin facing team behavior', function(){
@@ -234,7 +263,7 @@ describe('admin facing team behavior', function(){
 	
 });
 
-describe('client facing league  behavior', function(){
+describe('client facing league behavior', function(){
 
 	it('should return a 200 status for returning all teams belonging to one league', function(done){
 		request(app)
@@ -242,37 +271,60 @@ describe('client facing league  behavior', function(){
 			.expect(200,done);
 	});
 
+	it('should return JSON content type', function(done){
+		request(app)
+			.get('/league/1')
+			.expect('Content-Type', /json/, done);
+	});
+		
 	it('should return all teams belonging to one league', function(done){
 		request(app)
 			.get('/league/1')
-			.expect(function(res){
-				console.log(res.body);
+			.expect(200)	
+			.end(function(err,res){
+				expect(res.body).to.not.have.length(1);
+				expect(res.body).to.not.equal(null);
+				done();
 			})
-			.expect(200,done);
-	})
+	})	
 
 })
 
 
-xdescribe('schedule behavior', function(){
-	const data = { 'data': 'test data goes here' };
+describe('schedule behavior', function(){
+	const date = Date();
+	const data = {
+		'hometeam': 'test',
+		'awayteam': 'test',
+		'week': 5,
+		'location': 'testplace',
+		'date':'2016-08-09 04:05:02',
+		'time': '745',
+		'league': 'TestLeague'
+	};
 	
-	it('should return all schedules', function(done){
+	it('should return all schedules when queried by league', function(done){
 		request(app)
-			.get('/schedule')
+			.get('/schedule/league/TestLeague')
+			.expect(function(res){
+				//console.log('league sched return', res.body);
+			})	
+			.expect(200,done);
+	})
+
+	it('should return all schedules when queried by team', function(done){
+		request(app)
+			.get('/schedule/team/test')
+			.expect(function(res){
+				//console.log('team sched return', res.body);
+			})
 			.expect(200,done);
 	})
 
 	it('should return json', function(done){
 		request(app)
-			.get('/schedule')
+			.get('/schedule/league/TestLeague')
 			.expect('Content-Type', /json/, done);
-	})
-
-	it('should return on schedule', function(done){
-		request(app)
-			.get('/schedule/1')
-			.expect(200,done);
 	})
 
 	it('should add a schedule', function(done){
@@ -282,7 +334,7 @@ xdescribe('schedule behavior', function(){
 			.expect(200,done);
 	});
 
-	it('should delete a schedule', function(done){
+	xit('should delete a schedule', function(done){
 		request(app)
 			.post('/schedule/1')
 			.expect(200,done);
