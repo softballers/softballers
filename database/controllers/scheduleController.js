@@ -30,6 +30,17 @@ scheduleController.getByTeam = (req,res) => {
 		});
 }
 
+scheduleController.addSchedule = (req,res) => {
+	const data = req.body;
+	console.log(typeof data.date);
+	Schedule.create(data)
+		.then(() => res.end())
+		.catch(err => {
+			console.log('err writing new schedule', err);
+			res.status(400).end()
+		})
+}
+
 module.exports = scheduleController;
 
 

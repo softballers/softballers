@@ -292,7 +292,16 @@ describe('client facing league behavior', function(){
 
 
 describe('schedule behavior', function(){
-	const data = { 'data': 'test data goes here' };
+	const date = Date();
+	const data = {
+		'hometeam': 'test',
+		'awayteam': 'test',
+		'week': 5,
+		'location': 'testplace',
+		'date':'2016-08-09 04:05:02',
+		'time': '745',
+		'league': 'TestLeague'
+	};
 	
 	it('should return all schedules when queried by league', function(done){
 		request(app)
@@ -312,19 +321,13 @@ describe('schedule behavior', function(){
 			.expect(200,done);
 	})
 
-	xit('should return json', function(done){
+	it('should return json', function(done){
 		request(app)
-			.get('/schedule')
+			.get('/schedule/league/TestLeague')
 			.expect('Content-Type', /json/, done);
 	})
 
-	xit('should return on schedule', function(done){
-		request(app)
-			.get('/schedule/1')
-			.expect(200,done);
-	})
-
-	xit('should add a schedule', function(done){
+	it('should add a schedule', function(done){
 		request(app)
 			.post('/schedule')
 			.send(data)
