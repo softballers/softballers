@@ -18,7 +18,6 @@ leagueController.findOne = (req, res) => {
 	const outputJSON = [];
   League.findOne({ where : { leagueid: +id }})
         .then((leagueData) => {
-					const leagueName = leagueData.name;
 					return leagueData; 
 				})
         .catch(() =>{
@@ -27,15 +26,15 @@ leagueController.findOne = (req, res) => {
 				})
 				.then(leagueData  => {
 					const leagueName = leagueData.name;
-					console.log('testing', leagueName);
 					Team.findAll({ where: { league: leagueName }})
 						.then(teams => {
 							const outputJSON = [leagueData]; 
-							outputJSON.push(teams);
+							const teamData = {};
+							teamData[teams] = teams;
+							outputJSON.push(teamData);
 							res.json(outputJSON);
 						})
 						.catch(err => {
-							console.log(`error finding all teams for particular league ${err}`);
 							res.status(400).end()
 						});
 				})

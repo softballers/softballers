@@ -9,6 +9,7 @@ const adminRouter = require('./adminRouter');
 const leagueRouter = require('./leagueRouter');
 const adminPlayerRouter = require('./adminPlayerRouter');
 const teamRouter = require('./teamRouter');
+const scheduleRouter = require('./scheduleRouter.js');
 const playerRouter = require('./playerRouter');
 const dbController = require('../database/controllers/dbController.js');
 
@@ -18,6 +19,7 @@ app.use(express.static(path.join(__dirname, '../client', 'dist' )));
 app.use('/admin', adminRouter);
 app.use('/admin/player', adminPlayerRouter);
 app.use('/admin/team', teamRouter);
+app.use('/schedule', scheduleRouter);
 app.use('/player', playerRouter);
 app.use('/league', leagueRouter);
 

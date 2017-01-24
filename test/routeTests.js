@@ -294,9 +294,21 @@ describe('client facing league behavior', function(){
 describe('schedule behavior', function(){
 	const data = { 'data': 'test data goes here' };
 	
-	it('should return all schedules', function(done){
+	it('should return all schedules when queried by league', function(done){
 		request(app)
-			.get('/schedule')
+			.get('/schedule/league/TestLeague')
+			.expect(function(res){
+				//console.log('league sched return', res.body);
+			})	
+			.expect(200,done);
+	})
+
+	it('should return all schedules when queried by team', function(done){
+		request(app)
+			.get('/schedule/team/test')
+			.expect(function(res){
+				//console.log('team sched return', res.body);
+			})
 			.expect(200,done);
 	})
 
