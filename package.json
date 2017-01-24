@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/ssitu001/softballers#readme",
   "dependencies": {
+    "axios": "^0.15.3",
     "body-parser": "^1.15.2",
     "chai": "^3.5.0",
     "pg": "^6.1.2",
