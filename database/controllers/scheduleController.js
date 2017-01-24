@@ -21,7 +21,7 @@ scheduleController.getByTeam = (req,res) => {
 		}
 	})
 		.then(data => {
-			console.log('in team controller', data);	
+		//	console.log('in team controller', data);	
 			res.json(data)
 		})
 		.catch(err => {

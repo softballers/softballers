@@ -24,14 +24,20 @@ leagueController.findOne = (req, res) => {
 					console.log('error finding one league');	
 					res.end(404);
 				})
+				.then((leagueData) => {
+					console.log('findOne league controller', leagueData);
+					return leagueData;
+				})
+				.catch(() => res.status(400).end)
 				.then(leagueData  => {
 					const leagueName = leagueData.name;
 					Team.findAll({ where: { league: leagueName }})
 						.then(teams => {
 							const outputJSON = [leagueData]; 
 							const teamData = {};
-							teamData[teams] = teams;
+							teamData.teams = teams;
 							outputJSON.push(teamData);
+							console.log('leage controller, data before response', JSON.stringify(outputJSON));
 							res.json(outputJSON);
 						})
 						.catch(err => {
