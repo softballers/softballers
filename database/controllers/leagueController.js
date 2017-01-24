@@ -1,5 +1,5 @@
-const { League } = require('../model/postgresDB');
-
+const { League, Team } = require('../model/postgresDB');
+const teamController = require('./teamController');
 const leagueController = {};
 
 leagueController.findAll = (req, res) => {
@@ -14,13 +14,25 @@ leagueController.findAll = (req, res) => {
 
 leagueController.findOne = (req, res) => {
   const { id } = req.params;
-	console.log('id',id);
   League.findOne({ where : { leagueid: +id }})
-        .then((data) => {
-					console.log(data);	
-					res.json(data)})
-        .catch(() => res.end(404));
-}
+        .then((leagueData) => {
+					const leagueName = leagueData.name;
+					Team.findAll({ where: { league: leagueName }})
+						.then(teams => {
+							const outputJSON = [leagueData]; 
+							outputJSON.push(teams);
+							res.json(outputJSON);
+						})
+						.catch(err => {
+							console.log(`error finding all teams for particular league ${err}`);
+							res.status(400).end()
+						});
+				})
+        .catch(() =>{
+					console.log('error finding one league');	
+					res.end(404);
+				});
+};
 
 leagueController.addLeague = (req, res) => {
   const { name } = req.body;
@@ -37,6 +49,16 @@ leagueController.removeLeague = (req,res) => {
 				  console.log(err);	
 					res.status(404).end()
 				});
+}
+
+leagueController.findAllTeams = (req,res) => {
+	const { leagueName } = req.params;
+	Team.findAll({ where: { league: leagueName }})
+		.then(teamData =>  teamData)
+		.catch(err => {
+			console.log(`error finding all teams through league controller ${err}`)
+			res.sendStatus(404).end()
+		})
 }
 
 
