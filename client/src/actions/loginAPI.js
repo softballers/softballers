@@ -7,7 +7,7 @@ export const LOGIN_ERR = 'LOGIN_ERR';
 
 export function loginUser(credentials) {
 
-  const dbQuery = axios.post(`http://localhost:8080/admin/login`, credentials);
+  const dbQuery = axios.post(`http://localhost:8080/api/admin/login`, credentials);
 
   return (dispatch) => {
     dbQuery.then(response => {
