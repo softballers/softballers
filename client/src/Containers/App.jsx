@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as actionsApi from '../actions/loginAPI';
+
+import LoginContainer from './LoginContainer.jsx';
 
 class App extends Component {
   constructor() {
@@ -7,9 +12,17 @@ class App extends Component {
 
   render() {
     return (      
-      <h1>Softballers</h1>
+      <div>
+        <h1>Softballers</h1>
+        <LoginContainer loginUser={this.props.loginUser} />
+      </div>
     )
   }
 }
 
-export default App;
+const mapStateToProps = (store) => { return {login : store.login}; }
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(Object.assign({}, actionsApi), dispatch); }
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
