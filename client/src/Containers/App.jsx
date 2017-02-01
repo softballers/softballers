@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionsApi from '../actions/loginAPI';
 
-import Login from '../Components/Login.jsx';
+import LoginContainer from './LoginContainer.jsx';
 
 class App extends Component {
   constructor() {
@@ -14,7 +14,7 @@ class App extends Component {
     return (      
       <div>
         <h1>Softballers</h1>
-        <Login />
+        <LoginContainer submitUser={this.props.loginUser} />
       </div>
     )
   }
