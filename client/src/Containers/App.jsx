@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionsApi from '../actions/loginAPI';
-
 import LoginContainer from './LoginContainer.jsx';
 
 class App extends Component {
@@ -13,7 +12,7 @@ class App extends Component {
   render() {
     return (      
       <div>
-        <h1>Softballers</h1>
+        <h1 style={{fontSize: 50}}>Softballers</h1>
         <LoginContainer loginUser={this.props.loginUser} />
       </div>
     )

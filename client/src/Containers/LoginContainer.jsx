@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import LoginForm from '../Components/LoginForm.jsx';
-
+// consider writing one function to handle keypress instead of two
 export default class LoginContainer extends Component {
   constructor() {
     super();
