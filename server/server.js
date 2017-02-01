@@ -16,12 +16,12 @@ const dbController = require('../database/controllers/dbController.js');
 app.use(bodyparser.json());
 app.use(express.static(path.join(__dirname, '../client', 'dist' )));
 
-app.use('/admin', adminRouter);
-app.use('/admin/player', adminPlayerRouter);
-app.use('/admin/team', teamRouter);
-app.use('/schedule', scheduleRouter);
-app.use('/player', playerRouter);
-app.use('/league', leagueRouter);
+app.use('/api/admin', adminRouter);
+app.use('/api/admin/player', adminPlayerRouter);
+app.use('/api/admin/team', teamRouter);
+app.use('/api/schedule', scheduleRouter);
+app.use('/api/player', playerRouter);
+app.use('/api/league', leagueRouter);
 
 
 module.exports = app;
