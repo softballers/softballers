@@ -1,15 +1,18 @@
 import React from 'react';
 
 const Login = (props) => {
-  
+
+  const { handleSubmit, handleUsername, handlePassword } = props;
+  console.log("handleSubmit", handleSubmit)
   return (
     <div>
-      <form onSubmit={ props.handleLogin }>
+      <form onSubmit={handleSubmit}>
         Username:<br/>
-        <input />
+        <input onChange={ handleUsername }/>
         <br/>
         Password:<br/>
-        <input />
+        <input onChange={ handlePassword }/>
+        <button type='submit'>Submit</button>
       </form>
     </div>
   )

@@ -14,7 +14,7 @@ class App extends Component {
     return (      
       <div>
         <h1>Softballers</h1>
-        <LoginContainer submitUser={this.props.loginUser} />
+        <LoginContainer loginUser={this.props.loginUser} />
       </div>
     )
   }
