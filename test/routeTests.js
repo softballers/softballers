@@ -23,8 +23,8 @@ describe('root route', () => {
 });
 
 describe('admin route', function(){
-	const username = 'root';
-	const password = 'toor';
+	const username = 'ROOT';
+	const password = 'TOOR';
 
 	before( function() {
 		Admin.create({ username, password })
@@ -42,36 +42,31 @@ describe('admin route', function(){
 			.catch((err) => console.log('error deleting admin', err));
 	});
 
-	it('returns a 200 status code', function(done){
-		request(app)
-			.get('/admin')
-			.expect(200,done);
-	});
 
 	it('validates admin login', function(done){
 		request(app)
-			.post('/admin/login')
+			.post('/api/admin/login')
 			.send({ 'username': '', 'password': '' })
 			.expect(400, done);
 	});
 
 	it('logs in valid user', function(done){
 		request(app)
-			.post('/admin/login')
+			.post('/api/admin/login')
 			.send({ 'username': 'ROOT', 'password': 'TOOR' })
 			.expect(200, done);
 	});
 
 	it('should not log in invalid user', function(done){
 		request(app)
-			.post('/admin/login')
+			.post('/api/admin/login')
 			.send({ 'username': 'rooty', 'password': 'ytoor' })
 			.expect(400, done);
 	});
 	
 	it('deletes an admin', function(done){
 		request(app)
-			.post('/admin/delete')
+			.post('/api/admin/delete')
 			.send({ 'username':'root', 'password': 'toor' })
 			.expect(201, done);
 	});
@@ -81,26 +76,26 @@ describe('league route', function(){
 
 	it('returns a 200 status code', function(done){
 		request(app)
-			.get('/league')
+			.get('/api/league')
 			.expect(200, done)
 	});
 
 	it('returns json', (done) => {
 		request(app)
-			.get('/league')
+			.get('/api/league')
 			.expect('Content-Type', /json/, done);
 	});
 	
 	it('can return all leauges', (done => {
 		request(app)
-			.get('/league')
+			.get('/api/league')
 			.expect(200,done);
 	}));
 
 	it('can return just one league', (done => {
 		//this should also test content length
 		request(app)
-			.get('/league/1/')
+			.get('/api/league/1/')
 			.expect(200)
 			.end(function(err,res){
 				const leagues = res.body.filter(thing => {
@@ -116,14 +111,14 @@ describe('league route', function(){
 describe('league adding and removing', function(){
 	it('should add new league', function(done){
 		request(app)
-			.post('/league')
+			.post('/api/league')
 			.send({ 'name': 'TESTLEAGUE' })
 			.expect(200, done);
 	});
 
 	it('should retrieve newly added league', function(done){
 		request(app)
-			.get('/league/1/')
+			.get('/api/league/1/')
 			.expect('Content-Type', /json/, done);	
 	});
 });
@@ -147,33 +142,33 @@ describe('admin facing player behavior', function(){
 
 	it('should add a new player', function(done){
 		request(app)
-			.post('/admin/player/addPlayer')
+			.post('/api/admin/player/addPlayer')
 			.send(data)	
 			.expect(200,done);	
 	});
 
 	it('should find an existing player', function(done){
 		request(app)
-			.get('/admin/player/2')
+			.get('/api/admin/player/2')
 			.expect(200,done);
 	});
 	
 	it('should return JSON', function(done){
 		request(app)
-			.get('/admin/player/2')
+			.get('/api/admin/player/2')
 			.expect('Content-Type', /json/, done);
 	});
 	
 	it('should update an existing player', function(done){
 		request(app)
-			.put('/admin/player/updatePlayer/2')
+			.put('/api/admin/player/updatePlayer/2')
 			.send(updatedData)
 			.expect(200,done);
 	});
 
 	it('should remove a new player', function(done){
 		request(app)
-			.post('/admin/player/removePlayer/1')
+			.post('/api/admin/player/removePlayer/1')
 			.expect(200,done);
 	});
 	
@@ -183,26 +178,26 @@ describe("client facing player behavior", function(){
 
 	it("should return one Player", function(done){
 		request(app)
-			.get('/player/3')
+			.get('/api/player/3')
 			.expect(200,done);
 	});
 	
 	it('should return JSON', function(done){
 		request(app)
-			.get('/player/3')
+			.get('/api/player/3')
 			.expect('Content-Type', /json/, done);
 	});
 
 	it('should return all players from one team', function(done){
 		request(app)
-			.get('/player/byteam/:teamname')
+			.get('/api/player/byteam/test')
 			.expect(200,done);
 	})
 
-	xit('should return all players from one league', function(done){
+	it('should return all players from one league', function(done){
 		//player table should probably have a leagueid key to make this behavior less insane
 		request(app)
-			.get('/player/byleague/:leagueid')
+			.get('/api/player/byleague/TESTLEAGUE')
 			.expect(200,done);
 	});
 
@@ -218,46 +213,46 @@ describe('admin facing team behavior', function(){
 
 	before( function(done){
 		request(app)
-			.post('/admin/team')
+			.post('/api/admin/team')
 			.send(teamData)
 		done()
 	});
 
 	after( function(done){
 		request(app)
-			.post('/admin/team/remove/1')
+			.post('/api/admin/team/remove/1')
 		done()
 
 	})	
 
 	it('should return JSON', function(done){
 		request(app)
-			.get('/admin/team/')
+			.get('/api/admin/team/')
 			.expect('Content-Type', /json/, done);
 	});
 
 	it('should send 200 status code', function(done){
 		request(app)
-			.get('/admin/team/')
+			.get('/api/admin/team/')
 			.expect(200,done)
 	});
 
 	it('should send all teams', function(done){
 			request(app)
-			.get('/admin/team/')
+			.get('/api/admin/team/')
 			.expect(200,done)
 	})
 
 	it('should add a new team', function(done){
 		request(app)
-			.post('/admin/team/')
+			.post('/api/admin/team/')
 			.send(teamData)
 			.expect(200,done);
 	})
 
 	it('should remove a team', function(done){
 		request(app)
-			.post('/admin/team/remove/1')
+			.post('/api/admin/team/remove/1')
 			.expect(200,done);
 	});	
 	
@@ -267,19 +262,19 @@ describe('client facing league behavior', function(){
 
 	it('should return a 200 status for returning all teams belonging to one league', function(done){
 		request(app)
-			.get('/league/1')
+			.get('/api/league/1')
 			.expect(200,done);
 	});
 
 	it('should return JSON content type', function(done){
 		request(app)
-			.get('/league/1')
+			.get('/api/league/1')
 			.expect('Content-Type', /json/, done);
 	});
 		
 	it('should return all teams belonging to one league', function(done){
 		request(app)
-			.get('/league/1')
+			.get('/api/league/1')
 			.expect(200)	
 			.end(function(err,res){
 				expect(res.body).to.not.have.length(1);
@@ -305,7 +300,7 @@ describe('schedule behavior', function(){
 	
 	it('should return all schedules when queried by league', function(done){
 		request(app)
-			.get('/schedule/league/TestLeague')
+			.get('/api/schedule/league/TestLeague')
 			.expect(function(res){
 				//console.log('league sched return', res.body);
 			})	
@@ -314,7 +309,7 @@ describe('schedule behavior', function(){
 
 	it('should return all schedules when queried by team', function(done){
 		request(app)
-			.get('/schedule/team/test')
+			.get('/api/schedule/team/test')
 			.expect(function(res){
 				//console.log('team sched return', res.body);
 			})
@@ -323,25 +318,20 @@ describe('schedule behavior', function(){
 
 	it('should return json', function(done){
 		request(app)
-			.get('/schedule/league/TestLeague')
+			.get('/api/schedule/league/TestLeague')
 			.expect('Content-Type', /json/, done);
 	})
 
 	it('should add a schedule', function(done){
 		request(app)
-			.post('/schedule')
+			.post('/api/schedule')
 			.send(data)
 			.expect(200,done);
 	});
 
-	xit('should delete a schedule', function(done){
+	it('should delete a schedule', function(done){
 		request(app)
-			.post('/schedule/1')
+			.post('/api/schedule/1')
 			.expect(200,done);
-		
-		request(app)
-			.get('/schedule/1')
-			.expect(404,done);
-
 	});	
 });
